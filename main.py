@@ -23,7 +23,7 @@ def getMessage():
 @app.route('/')
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://YOUR_RAILWAY_URL/' + TOKEN)
+    bot.set_webhook(url='ce17677d-f3da-4e47-bc69-480b063dfcea' + TOKEN)
     return "Bot ishga tushdi!", 200
 
 if __name__ == "__main__":

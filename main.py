@@ -1,34 +1,26 @@
 import telebot
-import os
 from flask import Flask, request
+import os
 
-TOKEN = os.getenv("7952799058:AAE3k0Vj-1cSJ_eot_tZ46b1I-HqRkKr7MI") or "7952799058:AAE3k0Vj-1cSJ_eot_tZ46b1I-HqRkKr7MI"
-
+# 🔹 Token
+TOKEN = os.getenv("7952799058:AAE3k0Vj-1cSJ_eot_tZ46b1I-HqRkKr7MI")  # Railway environment variable
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
+# 🔹 /start buyrug‘i
 @bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "👋 Salom! IELTS tayyorlov botiga xush kelibsiz.\n\nBuyruqlar:\n📘 /vocabulary – So‘z boyligini oshirish\n🗣 /speaking – Speaking mashqlari\n🧠 /tips – IELTS maslahatlar")
+def start(message):
+    bot.reply_to(message, "✅ Bot ishlayapti! Sizning bot 24/7 onlayn bo‘ladi 😎")
 
-@bot.message_handler(commands=['vocabulary'])
-def vocab(message):
-    bot.reply_to(message, "Bugungi so‘z: *Accurate* – aniq, to‘g‘ri.\nMisol: Your answer is accurate ✅", parse_mode='Markdown')
-
-@bot.message_handler(commands=['speaking'])
-def speaking(message):
-    bot.reply_to(message, "Speaking savol: What is your favorite book and why? 📚")
-
-@bot.message_handler(commands=['tips'])
-def tips(message):
-    bot.reply_to(message, "Maslahat: Har kuni 5 ta yangi so‘z yodla va ularni gapda ishlat.")
-
+# 🔹 Webhook
 @app.route('/' + TOKEN, methods=['POST'])
 def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
+    bot.process_new_updates(
+        [telebot.types.Update.de_json(request.stream.read().decode("utf-8"))]
+    )
+    return "OK", 200
 
-@app.route("/")
+@app.route('/')
 def webhook():
     bot.remove_webhook()
     bot.set_webhook(url='https://YOUR_RAILWAY_URL/' + TOKEN)
